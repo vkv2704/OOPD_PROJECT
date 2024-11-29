@@ -1,33 +1,32 @@
-# Makefile for WiFiSimulator project
-
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -O2
+CXXFLAGS = -std=c++17 -Wall -Wextra -O2
 
-# Project settings
-SRC = wifi5.cpp           # The source file (your wifi5.cpp)
-OBJ = wifi5.o             # Object file generated from the source
-EXEC = wifi5      # The final executable
+# Target executable
+TARGET = wifi6
 
-# The default target to build the executable
-all: $(EXEC)
+# Source files
+SRCS = wifi6.cpp
 
-# Rule to link object files and create the executable
-$(EXEC): $(OBJ)
-	$(CXX) $(OBJ) -o $(EXEC)
+# Object files
+OBJS = $(SRCS:.cpp=.o)
 
-# Rule to compile the source code into an object file
-$(OBJ): $(SRC)
-	$(CXX) $(CXXFLAGS) -c $(SRC)
+# Default target
+all: $(TARGET)
 
-# Clean up compiled files
+# Link the executable
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+
+# Compile source files into object files
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Clean up build artifacts
 clean:
-	rm -f $(OBJ) $(EXEC)
+	rm -f $(TARGET) $(OBJS)
 
-# To run the program (Optional, can be called after make)
-run: $(EXEC)
-	./$(EXEC)
-
-# To run the clean target (Optional)
-rebuild: clean all
+# Run the program
+run: $(TARGET)
+	./$(TARGET)
 
